@@ -1,0 +1,148 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('https://source.unsplash.com/random/900×700/?japan');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.main_div {
+    border: 2px solid grey;
+    padding: 40px;
+    border-radius: 12px;
+    background: rgb(34, 193, 195);
+    background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+    box-shadow: grey 6px 2px 2px;
+}
+
+.music_container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 4fr 1fr;
+}
+
+#title {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+#artist {
+    text-align: center;
+}
+
+img {
+    /* make the img object fit and circle  */
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1.2rem 3rem 0.5rem rgba(0, 0, 0, 0.04);
+}
+
+
+.music_controls {
+    width: 30rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.fa-forward:active,
+.fa-backward:active,
+.fa-play:active .fa-pause:hover {
+    transform: scale(1.5);
+}
+
+.fa-forward,
+.fa-backward,
+.fa-play,
+.fa-pause {
+    font-size: 22px
+}
+
+.music_controls .fa-play:hover {
+    /* background-color: #f6f6f6; */
+    color: #111;
+    box-shadow: 0 1rem 2rem 0.2rem rgba(0, 0, 0, 0.4);
+}
+
+#img_cont {
+    margin: auto;
+    max-width: 268px;
+}
+
+.img_container.play {
+
+    animation: rotatePlayer 6s linear infinite;
+}
+
+@keyframes rotatePlayer {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* RPogress style */
+.progressbar_container {
+    width: 100%;
+    height: auto;
+    padding: 1rem 0;
+    margin-top: 1rem;
+}
+
+.progress_div {
+    width: 100%;
+    height: 0.08rem;
+    box-shadow: 0 1pxx rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
+        0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
+        0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
+
+    border: 1px solid grey;
+    border-radius: 4rem;
+    position: relative;
+    margin-top: 0.05rem;
+    transition: all 0.01s linear;
+    -moz-transition: all 0.01s linear;
+    -o-transition: all 0.01s linear;
+    -webkit-transition: all 0.01s linear;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.progress {
+    position: absolute;
+    /* top: 0; */
+    left: 0;
+    width: 0%;
+    height: 100%;
+    /* background-color: #000; */
+    border: 4px solid #000;
+    border-radius: 4rem;
+    cursor: pointer;
+    appearance: none;
+    margin-top: -4px;
+
+}
+
+.progress_duration_meter {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}

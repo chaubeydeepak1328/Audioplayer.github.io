@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music App</title>
+    <!-- linking style.css  -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Adding font awesome LinkTag -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="main_div">
+        <div class="music_container">
+            <h2 id="title">Crying Rain</h2>
+            <h3 id="artist">Domestric girlfriend</h3>
+            <div class="img_container" id="img_cont">
+                <img src="Images/d-1.jpg" alt="AlbumPhoto">
+            </div>
+            <audio src="music/d-1.mp3"></audio>
+
+            <!-- Progress bar  -->
+            <div class="progressbar_container" id="progress_container">
+                <div class="progress_duration_meter">
+                    <div id="current_time">0:00</div>
+                    <div id="duration">0:00</div>
+                </div>
+                <div class="progress_div" id="progress_div">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+
+            <!-- Control Section  -->
+            <div class="music_controls">
+                <i class="fa-sharp fa-solid fa-backward" id="Prev"></i>
+                <i class="fa-solid fa-play" id="Play"></i>
+                <i class="fa-sharp fa-solid fa-forward" id="Next"></i>
+
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+
+    <script>
+        const music = document.querySelector("audio");
+        const img = document.querySelector("img");
+        const artist = document.getElementById("artist");
+        const title = document.getElementById("title");
+        const prev = document.getElementById("Prev");
+        const play = document.getElementById("Play");
+        const next = document.getElementById("Next");
+
+        let progress = document.getElementById("progress");
+        let total_duration = document.getElementById("duration");
+        let current_time = document.getElementById("current_time");
+        let progress_div = document.getElementById("progress_div");
+
+        const songs = [{
+            name: "d-1",
+            title: "crying Rain",
+            artist: "Minami"
+        },
+        {
+            name: "d-2",
+            title: "shinunoga e-wa",
+            artist: "fujii kaze"
+        },
+        {
+            name: "d-3",
+            title: "Unravel",
+            artist: "Tōru '/TK/' Kitajima"
+        },
+        {
+            name: "d-4",
+            title: "GURENGE",
+            artist: "LiSA"
+        },
+        {
+            name: "d-5",
+            title: "Scars To Your Beautiful",
+            artist: "Alessia Cara"
+        },
+        {
+            name: "d-6",
+            title: "Suzume No Tojimari",
+            artist: "Radwimps"
+        },
+        ];
+
+        let isPlaying = false;
+        // for Play function
+        const playMusic = () => {
+            isPlaying = true;
+            music.play();
+            play.classList.replace("fa-play", "fa-pause");
+            // img.classList.add("anime");
+            
+            document.getElementById("img_cont").classList = "img_container play"
+        };
+
+        //for pause function 
+        const pauseMusic = () => {
+            isPlaying = false;
+            music.pause();
+            play.classList.replace("fa-pause", "fa-play");
+            // img.classList.remove("anime");
+
+            document.getElementById("img_cont").classList = "img_container"
+        };
+
+        play.addEventListener("click", () => {
+            isPlaying ? pauseMusic() : playMusic();
+        });
+
+        // changing the music data 
+        const loadSong = (songs) => {
+            title.textContent = songs.title;
+            artist.textContent = songs.artist;
+            //music.src = "musix/" + songs.name + ".mp3";
+            music.src = `music/${songs.name}.mp3`;
+            img.src = "Images/" + songs.name + ".jpg";
+        };
+
+        songIndex = 0;
+        //  loadSong(songs[2]);
+        const nextSong = () => {
+            songIndex = (songIndex + 1) % songs.length;
+            loadSong(songs[songIndex]);
+            playMusic();
+        };
+
+        const prevSong = () => {
+            songIndex = (songIndex - 1 + songs.length) % songs.length;
+            loadSong(songs[songIndex]);
+            playMusic();
+        };
+
+
+        //progress js work
+        // 40 (obtained);
+        // 100 (from)
+        // precentage = 100/40 = 0.4 ==> 0.4*100 = 40%
+
+        music.addEventListener("timeupdate", (event) => {
+            // console.log(event.srcElement.currentTime,event.srcElement.duration);
+            const { currentTime, duration } = event.srcElement;
+            let progress_time = parseInt((currentTime / duration) * 100);
+            progress.style.width = `${progress_time}%`;
+
+            // music duration update 
+            let minute_duration = Math.floor(duration / 60);
+            let second_duration = Math.floor(duration % 60);
+            if(second_duration<10)
+            {
+                second_duration = `0${second_duration}`;
+            }
+            if (duration) {
+                total_duration.textContent = `${minute_duration}:${second_duration}`;
+            } 
+            
+
+            // current Duration update 
+            let minute_currentTime = Math.floor(currentTime / 60);
+            let second_currentTime = Math.floor(currentTime % 60);
+            if(second_currentTime<10)
+            {
+                second_currentTime = `0${second_currentTime}`
+            }
+            current_time.textContent = `${minute_currentTime}:${second_currentTime}`;
+        });  
+
+        // Progress onclick functionality
+        progress_div.addEventListener("click",(event)=>
+        {
+            const {duration} = music;
+            // const duration = music.duration;
+            let move_progress = (event.offsetX/event.srcElement.clientWidth)*duration; 
+            // console.log(duration);
+            // console.log(move_progress);
+
+
+            music.currentTime = move_progress;
+            
+        });
+
+        // if music ended we call the next song   
+
+        music.addEventListener("ended",nextSong);
+        next.addEventListener("click", nextSong);
+        prev.addEventListener("click", prevSong);
+
+    </script>
+</body>
+</html>
